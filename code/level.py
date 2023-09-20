@@ -3,9 +3,10 @@ from support import import_csv_layout, import_folder
 from settings import *
 from tile import Tile
 from player import Player
+from weapon import Weapon
+from ui import UI
 from debug import debug 
 import random
-from weapon import Weapon
 
 class Level:
     def __init__(self):
@@ -21,6 +22,9 @@ class Level:
 
         # attack sprites
         self.current_attack = None
+
+        # user interface
+        self.ui = UI()
 
     def create_map(self):
         layouts = {
@@ -63,7 +67,7 @@ class Level:
         # update and draw the game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        debug(self.player.status)
+        self.ui.display(self.player)
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):

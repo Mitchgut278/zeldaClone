@@ -20,13 +20,12 @@ class Player(pygame.sprite.Sprite):
 
         # movement
         self.direction = pygame.math.Vector2()
-        self.speed = 5
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = 0
         self.obstacle_sprites = obstacle_sprites
 
-        #weapon
+        # weapon
         self.create_attack = create_attack
         self.destory_weapon = destroy_weapon
         self.weapon_index = 0
@@ -34,6 +33,13 @@ class Player(pygame.sprite.Sprite):
         self.can_switch_weapon = True
         self.weapon_switch_time = 0
         self.switch_duration_cooldown = 200
+
+        # stats
+        self.stats = {'health': 100, 'energy': 60, 'attack': 10, 'magic': 4, 'speed': 6}
+        self.health = self.stats['health'] * 0.5
+        self.energy = self.stats['energy'] * 0.3
+        self.exp = 123
+        self.speed = self.stats['speed']
 
     def import_player_assets(self):
         character_path = '../graphics/player'
@@ -44,7 +50,6 @@ class Player(pygame.sprite.Sprite):
         for animation in self.animations.keys():
             full_path = character_path + '/' + animation
             self.animations[animation] = import_folder(full_path)
-        print(self.animations)
             
     def input(self):
         if not self.attacking:
