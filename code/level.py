@@ -5,6 +5,7 @@ from tile import Tile
 from player import Player
 from debug import debug 
 import random
+from weapon import Weapon
 
 class Level:
     def __init__(self):
@@ -17,6 +18,9 @@ class Level:
 
         # sprite setup
         self.create_map()
+
+        # attack sprites
+        self.current_attack = None
 
     def create_map(self):
         layouts = {
@@ -45,12 +49,16 @@ class Level:
                             surf = graphics['objects'][int(col)]
                             Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
 
-        #         if col == 'x':
-        #             Tile((x,y), [self.visible_sprites, self.obstacle_sprites])
-        #         if col == 'p':
-        #             self.player = Player((x,y), [self.visible_sprites], self.obstacle_sprites)
-        self.player = Player((2000,1430), [self.visible_sprites], self.obstacle_sprites)
+        self.player = Player((2000,1430), [self.visible_sprites], self.obstacle_sprites, self.create_attack, self.destroy_weapon)
     
+    def create_attack(self):
+        self.current_attack = Weapon(self.player, [self.visible_sprites])
+
+    def destroy_weapon(self):
+        if self.current_attack:
+            self.current_attack.kill()
+        self.current_attack = None
+
     def run(self):
         # update and draw the game
         self.visible_sprites.custom_draw(self.player)
